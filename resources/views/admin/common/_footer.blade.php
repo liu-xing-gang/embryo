@@ -1,0 +1,1 @@
+{insert_scripts files="jquery-1.9.1.min.js,../js/jquery.json.js,../js/transport_jquery.js,../js/utils.js,listtable.js,listtable_pb.js,perfect-scrollbar.min.js,dsc_admin2.0.js,jquery-ui/jquery-ui.min.js,jquery.cookie.js,../js/calendar/calendar.min.js,jquery.bgColorSelector.js,jquery.validation.min.js,common.js,../js/jquery.form.js,jquery.nyroModal.js"}
