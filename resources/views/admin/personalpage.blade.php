@@ -5,8 +5,8 @@
   <link rel="stylesheet" href="@{{ layui.setter.base }}style/template.css?v=@{{ layui.admin.v }}-1" media="all">
 </script>  <div class="layui-card layadmin-header">
   <div class="layui-breadcrumb" lay-filter="breadcrumb" style="visibility: visible;">
-    <a lay-href="">主页</a><span lay-separator="">/</span>
-    <a><cite>页面</cite></a><span lay-separator="">/</span>
+    {{-- <a lay-href="">主页</a><span lay-separator="">/</span>
+    <a><cite>页面</cite></a><span lay-separator="">/</span> --}}
     <a><cite>个人主页</cite></a>
   </div>
 </div><div class="layui-fluid layadmin-homepage-fluid">

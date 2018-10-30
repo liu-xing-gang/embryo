@@ -12,12 +12,8 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('index');
 });
-
-Route::any('/login', ['uses' => 'LoginController@index']);
-Route::any('/register', ['uses' => 'AdminController@reg']);
-Route::any('/forget', ['uses' => 'AdminController@forget']);
 
 Route::any('/admin', ['uses' => 'AdminController@index']);
 
@@ -118,6 +114,14 @@ Route::group(['prefix'=>'admin','middleware'=>'web'],function(){
 });
 
 
-// 登录
+Route::any('/login', ['uses' => 'LoginController@index']);
+Route::any('/register', ['uses' => 'LoginController@reg']);
+Route::any('/forget', ['uses' => 'LoginController@forget']);
 Route::post('/check', ['uses'=> 'LoginController@check' ]);
+Route::any('/logout', ['uses'=> 'LoginController@logout' ]);
 
+Route::any('/articles', ['uses'=> 'IndexController@articles' ]);
+Route::any('/articles/{id}', ['uses'=> 'IndexController@articleDetail' ]);
+Route::any('/plays', ['uses'=> 'IndexController@plays' ]);
+Route::any('/plays/{id}', ['uses'=> 'IndexController@playsDetail' ]);
+Route::any('/show', ['uses'=> 'IndexController@show']);

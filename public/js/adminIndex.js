@@ -366,7 +366,7 @@ $(document).ready(function () {
         $('.admin-main-right iframe[name="workspace"]').remove()
 
         var iframe = '<iframe src="' + url + '" id="workspace" name="workspace" frameborder="0" width="100%" height="100%" scrolling="yes" style="height: 100%;"></iframe>'
-        $('.admin-main-right').append(iframe)
+        $('.admin-main-right').append(iframe).fadeIn()
 
         //防止页面后退
         try{

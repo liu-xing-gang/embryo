@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Cookie;
 
 class LoginController extends Controller
 {
@@ -42,4 +43,28 @@ class LoginController extends Controller
 
         return response()->json($arr);
     }
+
+    public function reg()
+    {
+        return view('admin.reg');
+    }
+
+    public function login()
+    {
+        return view('admin.login');
+    }
+
+    public function forget()
+    {
+        return view('admin.forget');
+    }
+
+    public function logout(Request $request)
+    {
+        $request->session()->flush();
+        Cookie::forget('XSRF-TOKEN');
+        Cookie::forget('laravel_session');
+        return redirect('/');
+    }
+
 }

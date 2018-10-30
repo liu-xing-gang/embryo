@@ -118,21 +118,6 @@ class AdminController extends Controller
         return view('admin.search');
     }
 
-    // public function reg()
-    // {
-    //     return view('admin.reg');
-    // }
-
-    // public function login()
-    // {
-    //     return view('admin.login');
-    // }
-
-    // public function forget()
-    // {
-    //     return view('admin.forget');
-    // }
-
     public function error404()
     {
         return view('admin.error404');

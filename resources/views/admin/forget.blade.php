@@ -10,6 +10,11 @@
     <link rel="stylesheet" href="{{asset('layui-v2.4.3/css/layui.css')}}" media="all">
     <link id="layuicss-layuiAdmin" rel="stylesheet" href="{{asset('css/admin.css')}}" media="all">
     <link rel="stylesheet" href="{{asset('css/login.css')}}" media="all">
+    <style>
+        .layadmin-user-login{padding: 0; min-height: initial;}
+        .layadmin-user-login-footer{padding: 0; bottom: -36px;}
+        #LAY_app{display: flex; align-items: center; justify-content: center;}
+    </style>
     <script src="{{asset('layui-v2.4.3/layui.js')}}"></script>
 
 </head>
@@ -19,8 +24,7 @@
         <div class="layadmin-user-login layadmin-user-display-show" id="LAY-user-login" style="display: none;">
             <div class="layadmin-user-login-main">
                 <div class="layadmin-user-login-box layadmin-user-login-header">
-                    <h2>layuiAdmin</h2>
-                    <p>layui 官方出品的单页面后台管理模板系统</p>
+                    <h2>忘记密码</h2>
                 </div>
                 <div class="layadmin-user-login-box layadmin-user-login-body layui-form">
 
@@ -97,12 +101,12 @@
 
             <div class="layui-trans layadmin-user-login-footer">
 
-                <p>© 2018 <a href="http://www.layui.com/" target="_blank">layui.com</a></p>
-                <p>
+                <p>© 2018 <a href="http://www.shalao.com.com/" target="_blank">www.shalao3.com</a></p>
+                {{-- <p>
                     <span><a href="http://www.layui.com/admin/#get" target="_blank">获取授权</a></span>
                     <span><a href="http://www.layui.com/admin/pro/" target="_blank">在线演示</a></span>
                     <span><a href="http://www.layui.com/admin/" target="_blank">前往官网</a></span>
-                </p>
+                </p> --}}
             </div>
 
         </div>
