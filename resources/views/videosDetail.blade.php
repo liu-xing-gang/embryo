@@ -1,5 +1,10 @@
 @extends('index') @section('banner') @stop @section('content')
 <link href="{{ asset('videojs/video-js.css') }}" rel="stylesheet">
+<style>
+    @media(max-width: 768px){
+        .example_video_1-dimensions{height: 200px;}
+    }
+</style>
 <script src="{{ asset('videojs/videojs-ie8.min.js') }}"></script>
 <script src="{{ asset('videojs/video.js') }}"></script>
 <div class="layui-container" style="top: 15px;">
@@ -9,7 +14,7 @@
         <div class="layui-card-header">{{$video->video_title}}</div> --}}
         <div class="layui-card-body">
             <div style="display: flex; justify-content: center; aligin-items: center;">
-                <video id="example_video_1" class="video-js vjs-default-skin player" controls preload="none" width="800" height="450" poster="http://vjs.zencdn.net/v/oceans.png" data-setup="{}">
+                <video id="example_video_1" class="video-js vjs-default-skin player vjs-big-play-centered" controls preload="none" width="800" height="450" poster="http://vjs.zencdn.net/v/oceans.png" data-setup="{}">
                     {{-- <source src="http://vjs.zencdn.net/v/oceans.mp4" type="video/mp4">
                     <source src="http://vjs.zencdn.net/v/oceans.webm" type="video/webm">
                     <source src="http://vjs.zencdn.net/v/oceans.ogv" type="video/ogg">

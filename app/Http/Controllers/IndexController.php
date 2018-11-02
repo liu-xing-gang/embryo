@@ -10,30 +10,31 @@ use Illuminate\Contracts\Encryption\DecryptException;
 
 class IndexController extends Controller
 {
-    //
-    // public function articles()
-    // {
-    //     $data = Article::all();
-    //     foreach($data as $key => $val){
-    //         $val->article_id = Crypt::encrypt($val->article_id);
-    //     }
 
-    //     return view('articles', [
-    //         'data' => $data
-    //     ]);
-    // }
+    public function articles()
+    {
+        $data = Article::all();
+        foreach($data as $key => $val){
+            $val->article_id = Crypt::encrypt($val->article_id);
+        }
 
-    // public function articleDetail(Request $request)
-    // {
-    //     try {
-    //         $id = Crypt::decrypt($request->id);
-    //         $article = Article::where('article_id', $id)->first();
-    //     } catch (DecryptException $e) {
-    //     }
-    //     return view('articlesDetail', [
-    //         'article' => $article
-    //     ]);
-    // }
+        return view('articles', [
+            'data' => $data
+        ]);
+    }
+
+    public function articleDetail(Request $request)
+    {
+        try {
+            $id = Crypt::decrypt($request->id);
+            $article = Article::where('article_id', $id)->first();
+        } catch (DecryptException $e) {
+            return redirect('/404');
+        }
+        return view('articlesDetail', [
+            'article' => $article
+        ]);
+    }
 
     public function plays()
     {
@@ -41,7 +42,6 @@ class IndexController extends Controller
         foreach($data as $key => $val){
             $val->video_id = Crypt::encrypt($val->video_id);
         }
-
         return view('videos', [
             'data' => $data
         ]);
@@ -53,6 +53,7 @@ class IndexController extends Controller
             $id = Crypt::decrypt($request->id);
             $video = Video::where('video_id', $id)->first();
         } catch (DecryptException $e) {
+            return redirect('/404');
         }
         return view('videosDetail', [
             'video' => $video
@@ -89,5 +90,10 @@ class IndexController extends Controller
             echo fread($fp, $p);
         }
         fclose($fp);
+    }
+
+    public function error404()
+    {
+        return view('admin.error404');
     }
 }

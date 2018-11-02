@@ -854,7 +854,6 @@ i.ico-check,
     color: #fff;
 }
 
-
 /* -------------------------------skin----------------------------- */
 .navLeftTab{zoom:1;padding-bottom: 48px;}
 .fold .admin-main-left, .fold .admin-main-left .admincj_nav, .narrow .admin-main-left, .narrow .admin-main-left .admincj_nav{width: auto;}
@@ -865,7 +864,8 @@ i.ico-check,
 #msg_Container .item{width: 100%!important;}
 .fold .item.current{width: 64px!important;}
 .item.current{width: 204px!important;z-index: 5!important;}
+.narrow .item.current{width: 68px!important;}
 .item.current .sub-menu{position: absolute!important; left: 64px;}
 .navLeftTab::after{display:block;clear:both;content:"";visibility:hidden;height:0}
-.navLeftTab{zoom:1}
+.navLeftTab{zoom: 1;}
 /* -------------------------------skin----------------------------- */

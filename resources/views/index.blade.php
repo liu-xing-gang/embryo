@@ -61,7 +61,7 @@
     <header class="header">
         <nav class="nav box-shadow">
             <div class="layui-container">
-                <a href="#" class="logo" style="display: flex; align-items: center; justify-content: center;">logo<img src="" alt="" class="img-responsive"></a>
+                <a href="/" class="logo" style="display: flex; align-items: center; justify-content: center;">logo<img src="" alt="" class="img-responsive"></a>
                 <a class="btn-toggle"><i class="layui-icon layui-icon-down"></i></a>
                 <section class="menu">
                     <ul class="navbar">

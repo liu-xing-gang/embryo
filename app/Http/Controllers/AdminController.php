@@ -5,9 +5,17 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
+use App\Article;
+use App\Video;
+use Illuminate\Support\Facades\DB;
+use Crypt;
+use Illuminate\Contracts\Encryption\DecryptException;
 
 class AdminController extends Controller
 {
+    private $code;
+    private $message;
+
     public function __construct()
     {
         // Route::get('/', ['middleware' => ['first', 'second'], function () {
@@ -100,12 +108,97 @@ class AdminController extends Controller
 
     public function caller()
     {
-        return view('admin.caller');
+        try
+        {
+            $page_size = 10;
+            $articles = DB::table('articles')->paginate($page_size);
+
+            // $results->count()
+            // $results->currentPage()
+            // $results->firstItem()
+            // $results->hasMorePages()
+            // $results->lastItem() (Not avaliable when using simplePaginate)
+            // $results->nextPageUrl()
+            // $results->perPage()
+            // $results->previousPageUrl()
+            // $results->total() (Not available when using simplePaginate)
+            // $results->url($page)
+            // dd(\App\Article::paginate());
+
+            foreach($articles as $key => $val){
+                $val->article_id = Crypt::encrypt($val->article_id);
+            }
+        }
+        catch (Exception $e){}
+        return view('admin.caller', [
+            'articles' => $articles,
+            'page_size' => $page_size
+        ]);
     }
+
+    public function callerAdd(Request $request)
+    {
+        $article = new Article();  //表的模型实例化
+		$article->article_subject = $request->input('title');      //给模型的属性赋值
+		$article->article_content = $request->input('desc');
+        $flag = $article->save();   //save方法插入数据，返回插入是否成功的boolean值
+
+        return response()->json([
+            'code' => $flag,
+            'message' => '添加成功'
+        ]);
+    }
+
+    public function callerEdit(Request $request)
+    {
+        $id = Crypt::decrypt($request->id);
+        $article = new Article();
+        $flag = $article->where('article_id', $id)->update([
+            'article_subject' => $request->input('title'),
+            'article_content' => $request->input('desc')
+        ]);
+
+        return response()->json([
+            'code' => (bool)$flag,
+            'message' => '添加成功'
+        ]);
+    }
+
+    public function callerDel(Request $request)
+    {
+        $ids = $request->input('ids');
+        try
+        {
+            foreach($ids as $id){
+                $flag = Article::where('article_id', Crypt::decrypt($id))->delete();
+            }
+        }
+        catch(Exception $e){}
+
+        return response()->json([
+            'code' => (bool)$flag,
+            'message' => '删除成功'
+        ]);
+    }
+
+
 
     public function goodslist()
     {
-        return view('admin.goodslist');
+        try
+        {
+            $page_size = 10;
+            $videos = DB::table('videos')->paginate($page_size);
+            foreach($videos as $key => $val){
+                $val->video_id = Crypt::encrypt($val->video_id);
+            }
+        }
+        catch (Exception $e){}
+
+        return view('admin.goodslist', [
+            'videos' => $videos,
+            'page_size' => $page_size
+        ]);
     }
 
     public function msgboard()

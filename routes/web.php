@@ -109,10 +109,12 @@ Route::group(['prefix'=>'admin','middleware'=>'web'],function(){
 
     Route::any('workorder/list', ['uses' => 'AdminController@workorderList']);
 
-
+    // article
+    Route::post('/articles/add', ['uses'=> 'AdminController@callerAdd']);
+    Route::post('/articles/edit', ['uses'=> 'AdminController@callerEdit']);
+    Route::post('/articles/del', ['uses'=> 'AdminController@callerDel']);
 
 });
-
 
 Route::any('/login', ['uses' => 'LoginController@index']);
 Route::any('/register', ['uses' => 'LoginController@reg']);
@@ -123,5 +125,9 @@ Route::any('/logout', ['uses'=> 'LoginController@logout' ]);
 Route::any('/articles', ['uses'=> 'IndexController@articles' ]);
 Route::any('/articles/{id}', ['uses'=> 'IndexController@articleDetail' ]);
 Route::any('/plays', ['uses'=> 'IndexController@plays' ]);
-Route::any('/plays/{id}', ['uses'=> 'IndexController@playsDetail' ]);
+Route::any('/plays/{id}', ['uses'=> 'IndexController@playsDetail']);
 Route::any('/show', ['uses'=> 'IndexController@show']);
+Route::any('/404', ['uses'=> 'IndexController@error404']);
+
+
+

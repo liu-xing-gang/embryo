@@ -18,7 +18,7 @@
                     <div class="layui-card">
                     <div class="layui-card-header">{{ $article->article_subject }}</div>
                         <div class="layui-card-body">
-                            <div class="clamp">{{ $article->article_content }}</div>
+                            <div class="clamp">{!! $article->article_content !!}</div>
                         </div>
 
                     </div>
