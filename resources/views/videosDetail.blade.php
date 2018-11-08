@@ -37,7 +37,7 @@
         var video = document.getElementsByTagName("video")[0];
         window.URL = window.URL || window.webkitURL;
         var xhr = new XMLHttpRequest();
-        xhr.open("GET", "/show", true);
+        xhr.open("POST", "/show", true);
         /*
             正常我们用AJAX请求的是后台的借口
             这里直接请求的是一个.MP4的文件；
@@ -53,7 +53,8 @@
                 video.src = window.URL.createObjectURL(blob);
             }
         }
-        xhr.send();
+        xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+        xhr.send('_token='+$('input[name=_token]').val());
     })
 </script>
 @stop

@@ -67,4 +67,9 @@ class LoginController extends Controller
         return redirect('/');
     }
 
+    public function auth1(Request $request)
+    {
+        return view('auth1');
+    }
+
 }

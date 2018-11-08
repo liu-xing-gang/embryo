@@ -62,6 +62,8 @@ class IndexController extends Controller
 
     public function show(Request $request)
     {
+        if(!$request->input('_token'))
+            return  'No Way';
         $file = str_replace('\\','/', public_path()).'/videos/oceans.mp4';
         $size = filesize($file);
         header("Content-type: video/mp4");

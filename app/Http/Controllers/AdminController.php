@@ -7,9 +7,12 @@ use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use App\Article;
 use App\Video;
+use App\Site;
+use App\User;
 use Illuminate\Support\Facades\DB;
 use Crypt;
 use Illuminate\Contracts\Encryption\DecryptException;
+use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
@@ -46,7 +49,40 @@ class AdminController extends Controller
      */
     public function siteSetting()
     {
-        return view('admin.site-setting');
+        try
+        {
+            $site = Site::first();
+        }
+        catch(Exception $e){}
+        return view('admin.site-setting', [
+            'site' => $site
+        ]);
+    }
+
+    public function siteUpdating(Request $request)
+    {
+        $site = new Site();
+        $flag = $site->where('site_id', 1)->update([
+            'site_name' => $request->input('sitename'),
+            'site_domain' => $request->input('domain'),
+            'site_title' => $request->input('title'),
+            'site_keywords' => $request->input('keywords'),
+            'site_description' => $request->input('description'),
+            'site_copyright' => $request->input('copyright'),
+        ]);
+
+        if(!$flag)
+        {
+            return response()->json([
+                'code' => 0,
+                'message' => '修改失败'
+            ]);
+        }
+
+        return response()->json([
+            'code' => (bool)$flag,
+            'message' => '添加成功'
+        ]);
     }
 
     /**
@@ -60,8 +96,35 @@ class AdminController extends Controller
     /**
      * 基本资料
      */
-    public function basic(){
-        return view('admin.basic');
+    public function basic(Request $request){
+
+        $user = User::where('name', $request->session()->get('name'))->first();
+        return view('admin.basic', [
+            'basic' => $user
+        ]);
+    }
+
+    public function basicSet(Request $request)
+    {
+        $flag = User::where('name', $request->session()->get('name'))->update([
+            'email' => $request->input('email'),
+            'gender' => $request->input('sex'),
+            'avatar' => $request->input('avatar'),
+            'phone' => $request->input('phone'),
+            'remarks' => $request->input('remarks'),
+        ]);
+        if(!$flag)
+        {
+            return response()->json([
+                'code' => 0,
+                'message' => '修改失败'
+            ]);
+        }
+
+        return response()->json([
+            'code' => (bool)$flag,
+            'message' => '添加成功'
+        ]);
     }
 
     /**
@@ -70,6 +133,61 @@ class AdminController extends Controller
     public function changePswd()
     {
         return view('admin.change-pswd');
+    }
+
+    public function pswdRest(Request $request)
+    {
+        $user = User::where('name', $request->session()->get('name'))->first();
+        if (!Hash::check($request->input('oldPassword'), $user->password))
+        {
+            return response()->json([
+                'code' => '00',
+                'message' => '密码错误'
+            ]);
+        }
+
+        if($request->input('oldPassword') == '')
+        {
+            return response()->json([
+                'code' => '01',
+                'message' => '请输入原密码'
+            ]);
+        }
+
+        if($request->input('password') == '')
+        {
+            return response()->json([
+                'code' => '02',
+                'message' => '请输入新密码'
+            ]);
+        }
+
+        if($request->input('repassword') == '')
+        {
+            return response()->json([
+                'code' => '03',
+                'message' => '请再次输入新密码'
+            ]);
+        }
+
+        if($request->input('password') === $request->input('repassword'))
+        {
+            $user = User::where('name', $request->session()->get('name'))->update([
+                'password' => Hash::make($request->input('password'))
+            ]);
+            return response()->json([
+                'code' => '11',
+                'message' => '修改成功!'
+            ]);
+        }
+        else
+        {
+            return response()->json([
+                'code' => '10',
+                'message' => '两次密码不一致,请重新输入'
+            ]);
+        }
+
     }
 
     /**
@@ -180,8 +298,6 @@ class AdminController extends Controller
             'message' => '删除成功'
         ]);
     }
-
-
 
     public function goodslist()
     {
@@ -430,8 +546,5 @@ class AdminController extends Controller
     {
         return view('admin.workorderList');
     }
-
-
-
 
 }

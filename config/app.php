@@ -213,6 +213,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
         // 配置JWT
+        
         'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
         'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
 

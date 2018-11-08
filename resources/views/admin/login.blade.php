@@ -69,6 +69,8 @@
         </div>
     </div>
     <script src="{{asset('layui-v2.4.3/layui.js')}}"></script>
+    <script src="{{ asset('js/jquery-1.9.1.min.js') }}"></script>
+    <script src="{{ asset('js/jquery.cookie.js') }}"></script>
     <script>
         layui.use('form', function() {
             var $ = layui.jquery,
@@ -112,6 +114,9 @@
             });
 
         });
+
+        $.cookie("dscActionParam",null)
+        $.cookie("dscUrl",null)
     </script>
     </div>
 

@@ -17,6 +17,8 @@ Route::get('/', function () {
 
 Route::any('/admin', ['uses' => 'AdminController@index']);
 
+Route::any('/auth1', ['uses'=> 'LoginController@auth1']);
+
 Route::group(['prefix'=>'admin','middleware'=>'web'],function(){
 
     Route::any('siteSetting', ['uses' => 'AdminController@siteSetting']);
@@ -114,6 +116,10 @@ Route::group(['prefix'=>'admin','middleware'=>'web'],function(){
     Route::post('/articles/edit', ['uses'=> 'AdminController@callerEdit']);
     Route::post('/articles/del', ['uses'=> 'AdminController@callerDel']);
 
+    Route::post('/site/update', ['uses'=> 'AdminController@siteUpdating']);
+
+    Route::post('/basic/set', ['uses'=> 'AdminController@basicSet']);
+    Route::post('/pswd/reset', ['uses'=> 'AdminController@pswdRest']);
 });
 
 Route::any('/login', ['uses' => 'LoginController@index']);
@@ -126,7 +132,8 @@ Route::any('/articles', ['uses'=> 'IndexController@articles' ]);
 Route::any('/articles/{id}', ['uses'=> 'IndexController@articleDetail' ]);
 Route::any('/plays', ['uses'=> 'IndexController@plays' ]);
 Route::any('/plays/{id}', ['uses'=> 'IndexController@playsDetail']);
-Route::any('/show', ['uses'=> 'IndexController@show']);
+Route::post('/show', ['uses'=> 'IndexController@show']);
+Route::get('/show', ['uses'=> 'IndexController@error404']);
 Route::any('/404', ['uses'=> 'IndexController@error404']);
 
 
