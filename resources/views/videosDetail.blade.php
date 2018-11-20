@@ -15,12 +15,6 @@
         <div class="layui-card-body">
             <div style="display: flex; justify-content: center; aligin-items: center;">
                 <video id="example_video_1" class="video-js vjs-default-skin player vjs-big-play-centered" controls preload="none" width="800" height="450" poster="http://vjs.zencdn.net/v/oceans.png" data-setup="{}">
-                    {{-- <source src="http://vjs.zencdn.net/v/oceans.mp4" type="video/mp4">
-                    <source src="http://vjs.zencdn.net/v/oceans.webm" type="video/webm">
-                    <source src="http://vjs.zencdn.net/v/oceans.ogv" type="video/ogg">
-                    <track kind="captions" src="../shared/example-captions.vtt" srclang="en" label="English"></track>
-                    <track kind="subtitles" src="../shared/example-captions.vtt" srclang="en" label="English"></track>
-                    <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p> --}}
                 </video>
             </div>
         </div>
@@ -55,6 +49,9 @@
         }
         xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
         xhr.send('_token='+$('input[name=_token]').val());
+
+        $('video').bind('contextmenu',function() { return false; });
     })
+
 </script>
 @stop

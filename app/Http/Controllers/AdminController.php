@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 use Crypt;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
 {
@@ -545,6 +546,60 @@ class AdminController extends Controller
     public function workorderList()
     {
         return view('admin.workorderList');
+    }
+
+    public function uploadAdd(Request $request)
+    {
+        $file = $request->file('file');
+
+        if ($file->isValid()) {
+            // 获取文件相关信息
+            $originalName = $file->getClientOriginalName(); //文件原名
+            $ext = $file->getClientOriginalExtension();     // 扩展名
+            $realPath = $file->getRealPath();   //临时文件的绝对路径
+            $type = $file->getClientMimeType();     // image/jpeg
+            $size =$file->getSize();
+            $extArr = array('jpg','jpeg','png','gif');
+            // 拼接文件名称
+            $filename = date('YmdHis') . uniqid() . '.' . $ext;
+            // if($size > 2*1024*1024){
+            //     return response()->json([
+            //         "code" => -2,
+            //         "msg" => "文件大小不能超过2M",
+            //         "data" => ["src" => $filename]
+            //     ]);
+            // }
+
+            // if(!in_array(strtolower($ext),$extArr)){
+            //     return response()->json([
+            //         "code" => -3,
+            //         "msg" => "文件格式错误",
+            //         "data" => ["src" => $filename]
+            //     ]);
+            // }
+
+            $bool = Storage::disk('uploads')->put($filename, file_get_contents($realPath));
+
+            if($bool){
+                return response()->json([
+                    "code" => 1,
+                    "msg" => "success",
+                    "data" => ["src" => $filename]
+                ]);
+            }else{
+                return response()->json([
+                    "code" => 0,
+                    "msg" => "fail",
+                    "data" => ["src" => $filename]
+                ]);
+            }
+        }else{
+            return response()->json([
+                "code" => -1,
+                "msg" => "fail",
+                "data" => ["src" => $filename]
+            ]);
+        }
     }
 
 }

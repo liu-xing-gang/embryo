@@ -64,6 +64,12 @@ return [
             'url' => env('AWS_URL'),
         ],
 
+        // uploads目录，用于存储上传的文件
+        'uploads' => [
+            'driver' => 'local',
+            'root' => storage_path('app/uploads')
+        ],
+
     ],
 
 ];

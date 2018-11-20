@@ -16,7 +16,6 @@
     }
 
     /* ueditor 最小高度 */
-
     .edui-default .edui-editor-iframeholder {
         min-height: initial;
     }
@@ -94,8 +93,11 @@
     .txt-center{text-align: center;}
     .txt-justify{text-align: justify;}
     .cmd-box{padding: 0 10px;}
+    #layui-progress{display: none;}
 </style>
 <div class="layui-body" id="LAY_app_body">
+    {{-- {{ csrf_field() }} --}}
+    @csrf
     <div class="layadmin-tabsbody-item layui-show">
         <div class="layui-card layadmin-header">
             <div class="layui-breadcrumb" lay-filter="breadcrumb" style="visibility: visible;">
@@ -114,8 +116,9 @@
             </div>
             <form action="" class="layui-form">
                 <div class="layui-row layui-col-space30">
-                    {{-- 列表 --}} @foreach($videos as $video)
-                    <div class="layui-col-md2 layui-col-sm4">
+                    {{-- 列表 --}}
+                    @foreach($videos as $video)
+                    <div class="layui-col-xs2">
                         <div class="cmdlist-container">
                             <input type="checkbox" lay-skin="primary" title="" value="">
                             <a href="javascript:;"><img src="{{asset('images/portrait.png')}}"></a>
@@ -123,11 +126,6 @@
                                 <div class="cmdlist-text">
                                     <h3>{{ $video->video_title }}</h3>
                                     <div class="info txt-justify">{{ $video->video_description }}</div>
-                                    <div class="price">
-                                        <b>好评 1</b>
-                                        <p>差评 2</p>
-                                        <span class="flow"><i class="layui-icon layui-icon-rate"></i>播放量 433</span>
-                                    </div>
                                 </div>
                             </a>
                         </div>
@@ -168,13 +166,16 @@
             </div>
             <div class="layui-form-item layui-form-text">
                 <label class="layui-form-label">缩略图</label>
-                <div class="layui-input-block">
+                <div class="layui-input-inline">
                     <div class="layui-upload">
                         <button type="button" class="layui-btn" id="img-upload">上传图片</button><input class="layui-upload-file" type="file" accept="undefined" name="file">
                         <div class="layui-upload-list">
                             <img class="layui-upload-img" id="img-preview">
                             <p id="text1"></p>
                         </div>
+                    </div>
+                    <div id="layui-progress" class="layui-progress" lay-showPercent="yes" lay-filter="progressBar">
+                        <div class="layui-progress-bar layui-bg-green" lay-percent="0%"></div>
                     </div>
                 </div>
             </div>
@@ -199,15 +200,19 @@
 <script type="text/javascript" src="{{ asset('ueditor/ueditor.config.js') }}"></script>
 <script type="text/javascript" src="{{ asset('ueditor/ueditor.all.js') }}"></script>
 <script>
-    layui.use(['form', 'layer', 'upload'], function() {
+    layui.use(['form', 'layer', 'upload', 'element'], function() {
         var form = layui.form,
             $ = layui.jquery,
             layer = layui.layer,
             index = new Number,
             index2 = new Number,
-            upload = layui.upload
+            upload = layui.upload,
+            element = layui.element
 
         form.render();
+        element.init();
+
+        console.log(upload, 'instance')
         var ue = UE.getEditor('editor', {
             initialFrameHeight: 160,
             scaleEnabled: true,
@@ -430,10 +435,23 @@
                 obj.preview(function(index, file, result) {
                     $('#img-preview').attr('src', result)
                 })
+                $('.layui-progress').fadeIn()
             },
+            data: {_token: $('input[name=_token]').val()},
+            progress: function(e , percent) {
+                element.progress('progressBar',percent  + '%')
+                if(percent === 100){
+                    $('.layui-progress').fadeOut('normal', function () {
+                        element.progress('progressBar',0  + '%')
+                    })
+                }
+			},
+
             done: function(res) {
-                if (res.code > 0) {
-                    return layer.msg('上传失败')
+                if (res.code === 1) {
+                    return layer.msg('上传成功!')
+                } else {
+                    return layer.msg(res.message)
                 }
             },
             error: function() {
@@ -445,15 +463,16 @@
             }
         })
 
+        var _token = $('input[name=_token]').val()
         upload.render({
             elem: '#video-upload',
             url: '/admin/upload',
             accept: 'video',
+            data: {_token: _token},
             done: function(res) {
                 console.log(res)
             }
         });
-
     })
 </script>
 @stop

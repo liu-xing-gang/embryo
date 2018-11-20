@@ -98,4 +98,9 @@ class IndexController extends Controller
     {
         return view('admin.error404');
     }
+
+    public function redis(Request $request)
+    {
+            return view('redis');
+    }
 }

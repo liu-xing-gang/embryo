@@ -78,6 +78,7 @@ Route::group(['prefix'=>'admin','middleware'=>'web'],function(){
 
     Route::any('upload/demo1', ['uses' => 'AdminController@uploadDemo1']);
     Route::any('upload/demo2', ['uses' => 'AdminController@uploadDemo2']);
+    Route::post('upload', ['uses' => 'AdminController@uploadAdd']);
 
     Route::any('colorpicker', ['uses' => 'AdminController@colorpicker']);
 
@@ -135,6 +136,12 @@ Route::any('/plays/{id}', ['uses'=> 'IndexController@playsDetail']);
 Route::post('/show', ['uses'=> 'IndexController@show']);
 Route::get('/show', ['uses'=> 'IndexController@error404']);
 Route::any('/404', ['uses'=> 'IndexController@error404']);
+
+Route::any('/redis', ['uses'=> 'IndexController@redis']);
+
+
+
+
 
 
 
