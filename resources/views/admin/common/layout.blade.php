@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <link rel="stylesheet" href="{{ asset('videojs/hls_version/video-js.css') }}">
     <link rel="stylesheet" href="{{ asset('layui-v2.4.3/css/layui.css') }}">
     <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
     <link rel="stylesheet" href="{{ asset('css/template.css') }}" media="all">
@@ -20,7 +21,6 @@
         }
     </style>
     <script src="{{ asset('layui-v2.4.3/layui.js') }}"></script>
-
     <script>
         // layui.config({
         //     dir: '/res/layui/' //layui.js 所在路径（注意，如果是script单独引入layui.js，无需设定该参数。），一般情况下可以无视

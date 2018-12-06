@@ -1,4 +1,4 @@
-@extends('index')
+@extends('layout')
 @section('banner')
 @stop
 @section('content')

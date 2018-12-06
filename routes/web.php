@@ -11,9 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return view('index');
-});
+Route::any('/', ['uses' => 'IndexController@index']);
 
 Route::any('/admin', ['uses' => 'AdminController@index']);
 
@@ -121,6 +119,11 @@ Route::group(['prefix'=>'admin','middleware'=>'web'],function(){
 
     Route::post('/basic/set', ['uses'=> 'AdminController@basicSet']);
     Route::post('/pswd/reset', ['uses'=> 'AdminController@pswdRest']);
+
+    // video
+    Route::post('/video/add', ['uses'=> 'AdminController@videoAdd']);
+    Route::post('/video/edit', ['uses'=> 'AdminController@videoEdit']);
+    Route::post('/video/del', ['uses'=> 'AdminController@videoDel']);
 });
 
 Route::any('/login', ['uses' => 'LoginController@index']);
@@ -133,11 +136,14 @@ Route::any('/articles', ['uses'=> 'IndexController@articles' ]);
 Route::any('/articles/{id}', ['uses'=> 'IndexController@articleDetail' ]);
 Route::any('/plays', ['uses'=> 'IndexController@plays' ]);
 Route::any('/plays/{id}', ['uses'=> 'IndexController@playsDetail']);
-Route::post('/show', ['uses'=> 'IndexController@show']);
-Route::get('/show', ['uses'=> 'IndexController@error404']);
+Route::any('/show', ['uses'=> 'IndexController@show']);
+// Route::get('/show', ['uses'=> 'IndexController@error404']);
 Route::any('/404', ['uses'=> 'IndexController@error404']);
 
 Route::any('/redis', ['uses'=> 'IndexController@redis']);
+
+// 上传图片的访问路由
+// Route::resource('/uploads/{img}', ['uses' => 'IndexController@img']);
 
 
 

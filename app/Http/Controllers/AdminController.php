@@ -602,4 +602,42 @@ class AdminController extends Controller
         }
     }
 
+    public function videoAdd(Request $request)
+    {
+        $video = new Video();  
+		$video->video_title = $request->input('title');     
+        $video->video_description = $request->input('desc');
+        $video->video_thumbnail = $request->input('thumbnail');
+        $video->video_url = $request->input('video', '');
+        $video->video_keywords = '关键字';
+        $flag = $video->save();   //save方法插入数据，返回插入是否成功的boolean值
+
+        return response()->json([
+            'code' => $flag,
+            'message' => '添加成功'
+        ]);
+
+    }
+
+    public function videoEdit(Request $request)
+    {
+        $id = Video::decrypt($request->id);
+        $article = new Video();
+        $flag = $article->where('video_id', $id)->update([
+            'video_title' => $request->input('title'),
+            '$video->video_description' => $request->input('desc'),
+            '$video->video_thumbnail' => $request->input('thumbnail'),
+        ]);
+
+        return response()->json([
+            'code' => (bool)$flag,
+            'message' => '添加成功'
+        ]);
+    }
+
+    public function videoDel()
+    {
+
+    }
+
 }
