@@ -10,12 +10,12 @@
     }
 
     /* 隐藏最小化按钮 */
-
     .layui-layer-min {
         display: none!important;
     }
 
     /* ueditor 最小高度 */
+
     .edui-default .edui-editor-iframeholder {
         min-height: initial;
     }
@@ -64,7 +64,7 @@
         padding-bottom: 50px;
     }
 
-    #test-template-2 .layui-textarea{
+    #test-template-2 .layui-textarea {
         width: auto!important;
     }
 
@@ -95,16 +95,39 @@
         height: 92px;
         margin: 0 10px 10px 0;
     }
-    .txt-center{text-align: center;}
-    .txt-justify{text-align: justify;}
-    .cmd-box{padding: 0 10px;}
-    .layui-progress{display: none;}
-    /* .cmdlist-container .layui-icon{position: absolute; top: 0; right: 0;} */
-    .layui-form-checkbox[lay-skin="primary"]{position: absolute;}
+
+    .txt-center {
+        text-align: center;
+    }
+
+    .txt-justify {
+        text-align: justify;
+    }
+
+    .cmd-box {
+        padding: 0 10px;
+    }
+
+    .layui-progress {
+        display: none;
+    }
+
+    .layui-form-checkbox[lay-skin="primary"] {
+        position: absolute;
+    }
+
+    #uploader{position: relative;}
+    #picker > div{width: 92px!important; height: 38px!important;}
+    #ctlBtn{position: absolute; top:0; left: 107px;}
+    #thelist{display: flex; flex-wrap: wrap; flex-grow: 1;}
+    .webuploader-pick{padding: 0!important; line-height: 38px;}
+    .uploader-list .item{padding: 5px;}
+    .progress,.progress-bar{height: 10px;}
+    .progress{border-radius: 5px; overflow: hidden; background-color: #e2e2e2;}
+    .progress-bar{background-color: #009688;}
 </style>
 <link rel="stylesheet" href="{{ asset('webuploader/webuploader.css') }}">
 <div class="layui-body" id="LAY_app_body">
-    {{-- {{ csrf_field() }} --}}
     @csrf
     <div class="layadmin-tabsbody-item layui-show">
         <div class="layui-card layadmin-header">
@@ -122,12 +145,11 @@
             </div>
             <form action="" class="layui-form">
                 <div class="layui-row layui-col-space10">
-                    {{-- 列表 --}}
-                    @foreach($videos as $video)
+                    {{-- 列表 --}} @foreach($videos as $video)
                     <div class="layui-col-sm4 layui-col-md3">
                         <div class="cmdlist-container" style="height: 196px; position: relative; display: flex; justify-content: space-between;">
-                        <input type="checkbox" lay-skin="primary" title="" value="{{ $video->video_id }}">
-                        <a href="javascript:;"><img class="img-responsive" style="width: 100px; height: 100px;" src="{{ env('UPLOAD_PATH') }}{{ $video->video_thumbnail }}"></a>
+                            <input type="checkbox" lay-skin="primary" title="" value="{{ $video->video_id }}">
+                            <a href="javascript:;"><img class="img-responsive" style="width: 100px; height: 100px;" src="{{ env('UPLOAD_PATH') }}{{ $video->video_thumbnail }}"></a>
                             <a href="javascript:;" class="cmd-box">
                                 <div class="cmdlist-text">
                                     <h3>{{ $video->video_title }}</h3>
@@ -140,14 +162,10 @@
                 </div>
                 <div class="layui-row txt-center">
                     <div class="layui-box layui-laypage layui-laypage-default">
-                        {{-- 分页 --}}
-                        @for($i=0; $i<$videos->total()/$page_size; $i++)
-                            @if($videos->currentPage() == ($i+1))
-                                <a href="{{ $videos->url($i+1) }}" class="p-curr">{{ $i+1 }}</a>
-                            @else
-                                <a href="{{ $videos->url($i+1) }}">{{ $i+1 }}</a>
-                            @endif
-                        @endfor
+                        {{-- 分页 --}} @for($i=0; $i
+                        <$videos->total()/$page_size; $i++) @if($videos->currentPage() == ($i+1))
+                            <a href="{{ $videos->url($i+1) }}" class="p-curr">{{ $i+1 }}</a> @else
+                            <a href="{{ $videos->url($i+1) }}">{{ $i+1 }}</a> @endif @endfor
                     </div>
                 </div>
             </form>
@@ -187,21 +205,22 @@
                 </div>
             </div>
             <div class="layui-form-item">
-                <label class="layui-form-label">视频</label>
-                <div class="layui-input-block" style="margin-bottom: 15px;">
-                    <button type="button" class="layui-btn" id="video-upload"><i class="layui-icon"></i>上传视频</button>
-                </div>
+                <label class="layui-form-label">视频</label> 
                 <div class="layui-input-block">
-                    <div id="layui-progress2" class="layui-progress" lay-showPercent="yes" lay-filter="progressBar">
-                        <div class="layui-progress-bar layui-bg-green" lay-percent="0%"></div>
+                    <div id="uploader" class="wu-example">
+                        <div class="btns">
+                            <div id="picker">选择文件</div>
+                            <button type="button" id="ctlBtn" class="btn btn-default layui-btn">开始上传</button>
+                        </div>
+                        <!--用来存放文件信息-->
+                        <div id="thelist" class="uploader-list"></div>
                     </div>
-                    <input type="hidden" class="layui-input" name="video">
                 </div>
             </div>
             <div class="layui-form-item">
                 <div class="layui-input-block">
                     <button class="layui-btn" lay-submit lay-filter="videoAddForm">立即提交</button>
-                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                 </div>
             </div>
         </div>
@@ -253,7 +272,7 @@
             <div class="layui-form-item">
                 <div class="layui-input-block">
                     <button class="layui-btn" lay-submit lay-filter="videoEditForm">立即提交</button>
-                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                 </div>
             </div>
         </div>
@@ -335,8 +354,9 @@
             var n = $('.layui-form-checked').length,
                 ids = [];
             $.each($('.layui-form-checked'), function(i, val) {
-                ids.push($(val).closest('.caller-item').find('input[type=checkbox]').val())
+                ids.push($(val).closest('.cmdlist-container').find('input[type=checkbox]').val())
             });
+
             if (n === 0) {
                 layer.msg('请至少选择一项！')
                 return false
@@ -347,7 +367,7 @@
             }, function() {
                 $.ajax({
                     type: 'POST',
-                    url: '/admin/articles/del',
+                    url: '/admin/video/del',
                     data: {
                         ids: ids,
                         _token: $('input[name=_token]').val()
@@ -426,7 +446,7 @@
                 // var html = ue.getContent();
                 // //获取纯文本内容，返回: hello
                 // var txt = ue.getContentTxt();
-                
+
                 $('#img-preview2').attr('src', el.find('.img-responsive').attr('src'))
                 $('input[name=thumbnail]').val(el.find('.img-responsive').attr('src'))
             });
@@ -471,7 +491,7 @@
             return false
         })
 
-        form.on('submit(articleEditForm)', function(data) {
+        form.on('submit(videoEditForm)', function(data) {
             data.field._token = $('input[name=_token]').val()
             data.field.id = $('.layui-form-checked').closest('.cmdlist-container').find('input[type=checkbox]').val()
             $.ajax({
@@ -503,16 +523,17 @@
                 })
                 $('#layui-progress').fadeIn()
             },
-            data: {_token: $('input[name=_token]').val()},
-            progress: function(e , percent) {
-                element.progress('progressBar',percent  + '%')
-                if(percent === 100){
-                    $('#layui-progress').fadeOut('normal', function () {
-                        element.progress('progressBar',0  + '%')
+            data: {
+                _token: $('input[name=_token]').val()
+            },
+            progress: function(e, percent) {
+                element.progress('progressBar', percent + '%')
+                if (percent === 100) {
+                    $('#layui-progress').fadeOut('normal', function() {
+                        element.progress('progressBar', 0 + '%')
                     })
                 }
-			},
-
+            },
             done: function(res) {
                 if (res.code === 1) {
                     $('input[name=thumbnail]').val(res.data.src)
@@ -530,33 +551,62 @@
             }
         })
 
-        var _token = $('input[name=_token]').val()
-        upload.render({
-            elem: '#video-upload',
-            url: '/admin/upload',
-            accept: 'video',
-            data: {_token: _token},
-            before: function(obj) {
-                $('#layui-progress2').fadeIn()
-            },
-            progress: function(e , percent) {
-                element.progress('progressBar',percent  + '%')
-                if(percent === 100){
-                    $('#layui-progress2').fadeOut('normal', function () {
-                        element.progress('progressBar',0  + '%')
-                    })
-                }
-			},
-            done: function(res) {
-                if (res.code === 1) {
-                    $('input[name=video]').val(res.data.src)
-                    return layer.msg('上传成功!')
-                } else {
-                    return layer.msg(res.message)
-                }
-            }
-        });
     });
 
+    // 视频上传
+    var _token = $('input[name=_token]').val()
+        // 初始化Web Uploader
+        var uploader = WebUploader.create({
+            swf: "{{ asset('webuploader/uploader.swf') }}",
+            server: "/admin/upload2",
+            pick: "#picker",
+            resize: false
+        })
+
+        var $list = $('#thelist')
+
+        // 显示用户选择
+        uploader.on('fileQueued', function(file) {
+            $list.append('<div id="' + file.id + '" class="item">' +
+                '<h4 class="info">' + file.name + '</h4>' +
+                '<p class="state">等待上传...</p>' +
+                '</div>')
+        })
+
+        // 文件上传过程中创建进度条实时显示。
+        uploader.on('uploadProgress', function(file, percentage) {
+            var $li = $('#' + file.id),
+                $percent = $li.find('.progress .progress-bar');
+
+            // 避免重复创建
+            if (!$percent.length) {
+                $percent = $('<div class="progress progress-striped active">' +
+                    '<div class="progress-bar" role="progressbar" style="width: 0%">' +
+                    '</div>' +
+                    '</div>').appendTo($li).find('.progress-bar');
+            }
+
+            $li.find('p.state').text('上传中').append('<span style="color: #009688;"> '+(percentage * 100).toFixed(2) + '%'+'</span>');
+
+            $percent.css('width', percentage * 100 + '%');
+        });
+
+        // 文件成功、失败处理
+        uploader.on('uploadSuccess', function(file) {
+            $('#' + file.id).find('p.state').text('已上传');
+        });
+
+        uploader.on('uploadError', function(file) {
+            $('#' + file.id).find('p.state').text('上传出错');
+        });
+
+        uploader.on('uploadComplete', function(file) {
+            $('#' + file.id).find('.progress').fadeOut();
+        });
+
+        $("#ctlBtn").click(function() {
+            uploader.options.formData = {_token: $('input[name=_token]').val()}
+            uploader.upload();
+        });
 </script>
 @stop

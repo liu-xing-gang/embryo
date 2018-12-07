@@ -1,82 +1,83 @@
-@extends('layout') @section('banner') @stop @section('content')
-<link href="{{ asset('videojs/video-js.css') }}" rel="stylesheet">
+@extends('layout') @section('banner') @stop @section('links') @parent
+<link href="{{ asset('videojs/hls_version/video-js.css') }}" rel="stylesheet">
 <style>
-    @media(max-width: 768px) {
-        .example_video_1-dimensions {
-            height: 200px;
-        }
-    }
+.vjs-button>.vjs-icon-placeholder:before {line-height: 36px;}
 </style>
-<script src="{{ asset('videojs/videojs-ie8.min.js') }}"></script>
-<script src="{{ asset('videojs/video.js') }}"></script>
+<script src="{{ asset('videojs/hls_version/video.js') }}"></script>
+<script src="{{ asset('videojs/hls_version/videojs-contrib-hls.js') }}"></script>
+@stop @section('content')
+
 <div class="layui-container" style="top: 15px;">
-    {{ csrf_field() }}
+    @csrf
     <article class="layui-card">
-        {{--
-        <div class="layui-card-header">{{$video->video_title}}</div> --}}
+        <div class="layui-card-header">{{$video->video_title}}</div>
         <div class="layui-card-body">
             <div style="display: flex; justify-content: center; aligin-items: center;">
-                <video id="my-player" class="video-js vjs-default-skin player vjs-big-play-centered" controls preload="none" width="800" height="450" poster="http://vjs.zencdn.net/v/oceans.png" data-setup="{}">
-                </video>
+                <video id="my-player" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto" width="400" height="300" poster="http://vjs.zencdn.net/v/oceans.png"></video>
             </div>
         </div>
     </article>
 </div>
 @stop @section('footer') @parent
+
 <script>
-    layui.use(['jquery', 'layer'], function() {
-        var $ = layui.$,
-            layer = layui.layer;
+    layui.use('jquery', function() {
+        var $ = layui.jquery
+        var myPlayer = videojs('my-player', {
+            bigPlayButton: true,
+            textTrackDisplay: false,
+            // posterImage: false,
+            errorDisplay: false,
+            controlBar: true
+        }, function() {
+            this.on('loadedmetadata', function() {
+                console.log('loadedmetadata');
+                //加载到元数据后开始播放视频
+                // this.play();
+            })
+            this.on('ended', function() {
+                console.log('ended')
+            })
+            this.on('firstplay', function() {
+                console.log('firstplay')
+            })
+            this.on('loadstart', function() {
+                //开始加载
+                console.log('loadstart')
+            })
+            this.on('loadeddata', function() {
+                console.log('loadeddata')
+            })
+            this.on('seeking', function() {
+                //正在去拿视频流的路上
+                console.log('seeking')
+            })
+            this.on('seeked', function() {
+                //已经拿到视频流,可以播放
+                console.log('seeked')
+            })
+            this.on('waiting', function() {
+                console.log('waiting')
+            })
+            this.on('pause', function() {
+                console.log('pause')
+            })
+            this.on('play', function() {
+                console.log('play')
+            })
+        })
 
-        var videoMp4 = document.querySelector('video');
-        if (window.MediaSource) {
-            var mediaSource = new MediaSource();
-            videoMp4.src = URL.createObjectURL(mediaSource);
-            mediaSource.addEventListener('sourceopen', sourceOpen);
-        } else {
-            console.log("The Media Source Extensions API is not supported.")
-        }
-
-        function sourceOpen(e) {
-            URL.revokeObjectURL(videoMp4.src);
-            // 设置 媒体的编码类型
-            // var mime = 'video/webm; codecs="vorbis, vp8"';
-            // var mime = 'video/mp2t;codecs="avc1.42E01E,mp4a.40.2"'
-            var mime = 'video/mp4; codecs="avc1.42E01E, mp4a.40.2"'
-            var mediaSource = e.target;
-            var sourceBuffer = mediaSource.addSourceBuffer(mime);
-            var videoUrl = '/show'
-
-            var formData = new FormData();
-            formData.append("_token", $('input[name=_token]').val());
-
-            var opts = {
-                method:"POST",   //请求方法
-                body:formData,   //请求体
-        // 　　　　　headers: {
-        // 　　　　 'Accept': 'application/json',
-        // 　　　　 'Content-Type': 'application/json',
-        // 　　　　 },
-
+        $.ajax({
+            type: 'POST',
+            url: '/show',
+            data: {
+                _token: $.trim($('input[name=_token]').val())
+            },
+            success: function(response) {
+                myPlayer.src(response)
+                myPlayer.load()
             }
-            fetch(videoUrl, opts)
-                .then(function(response) {
-                    return response.arrayBuffer();
-                })
-                .then(function(arrayBuffer) {
-                    sourceBuffer.addEventListener('updateend', function(e) {
-                        if (!sourceBuffer.updating && mediaSource.readyState === 'open') {
-                            mediaSource.endOfStream();
-                            videoMp4.play().then(function() {}).catch(function(err) {
-                                console.log(err)
-                            });
-                        }
-                    });
-                    sourceBuffer.appendBuffer(arrayBuffer);
-                });
-        }
-        // videojs
-        var player = videojs('my-player')
+        })
     })
 </script>
 @stop

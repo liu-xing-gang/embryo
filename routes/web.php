@@ -78,6 +78,8 @@ Route::group(['prefix'=>'admin','middleware'=>'web'],function(){
     Route::any('upload/demo2', ['uses' => 'AdminController@uploadDemo2']);
     Route::post('upload', ['uses' => 'AdminController@uploadAdd']);
 
+    Route::post('upload2', ['uses' => 'AdminController@uploadVideo']);
+
     Route::any('colorpicker', ['uses' => 'AdminController@colorpicker']);
 
     Route::any('slider', ['uses' => 'AdminController@slider']);
@@ -120,7 +122,7 @@ Route::group(['prefix'=>'admin','middleware'=>'web'],function(){
     Route::post('/basic/set', ['uses'=> 'AdminController@basicSet']);
     Route::post('/pswd/reset', ['uses'=> 'AdminController@pswdRest']);
 
-    // video
+    // 3 W  3|VCQ
     Route::post('/video/add', ['uses'=> 'AdminController@videoAdd']);
     Route::post('/video/edit', ['uses'=> 'AdminController@videoEdit']);
     Route::post('/video/del', ['uses'=> 'AdminController@videoDel']);

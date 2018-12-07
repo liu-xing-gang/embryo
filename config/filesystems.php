@@ -70,6 +70,12 @@ return [
             'root' => public_path('uploads')
         ],
 
+        // 视频目录
+        'uploads2' => [
+            'driver' => 'local',
+            'root' => public_path('videos/m3u8/')
+        ],
+
     ],
 
 ];

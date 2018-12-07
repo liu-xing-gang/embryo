@@ -602,6 +602,36 @@ class AdminController extends Controller
         }
     }
 
+    // 上传视频
+    public function uploadVideo(Request $request)
+    {
+        if($request->isMethod('POST')){
+            $file = $request->file('file');
+
+            if($file->isValid()){
+//                 $path = public_path().'/images';
+// File::isDirectory($path) or File::makeDirectory($path, 0777, true, true);
+
+                $path = $file->getRealPath();
+                $filename = $file->getClientOriginalName();
+
+                $flag = Storage::disk('uploads2')->put($filename, file_get_contents($path));
+
+                if($flag != 1){
+                    return response()->json([
+                        'code' =>(bool)$flag,
+                        'message' => '上传失败!'
+                    ]);
+                }
+
+                return response()->json([
+                    'code' => $flag,
+                    'message' => '添加成功'
+                ]);
+            }
+        }
+    }
+
     public function videoAdd(Request $request)
     {
         $video = new Video();  
@@ -621,12 +651,12 @@ class AdminController extends Controller
 
     public function videoEdit(Request $request)
     {
-        $id = Video::decrypt($request->id);
-        $article = new Video();
-        $flag = $article->where('video_id', $id)->update([
+        $id = Crypt::decrypt($request->id);
+        $video = new Video();
+        $flag = $video->where('video_id', $id)->update([
             'video_title' => $request->input('title'),
-            '$video->video_description' => $request->input('desc'),
-            '$video->video_thumbnail' => $request->input('thumbnail'),
+            'video_description' => $request->input('desc'),
+            'video_thumbnail' => $request->input('thumbnail'),
         ]);
 
         return response()->json([
@@ -635,9 +665,21 @@ class AdminController extends Controller
         ]);
     }
 
-    public function videoDel()
+    public function videoDel(Request $request)
     {
+        $ids = $request->input('ids');
+        try
+        {
+            foreach($ids as $id){
+                $flag = Video::where('video_id', Crypt::decrypt($id))->delete();
+            }
+        }
+        catch(Exception $e){}
 
+        return response()->json([
+            'code' => (bool)$flag,
+            'message' => '删除成功'
+        ]);
     }
 
 }

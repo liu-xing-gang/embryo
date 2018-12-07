@@ -115,7 +115,8 @@ class IndexController extends Controller
         //     echo fread($fp, $p);
         // }
         // fclose($fp);
-        header('X-Accel-Redirect: /videos/demo.mp4');
+        // header('X-Accel-Redirect: /videos/m3u8/playlist.m3u8');
+        return asset('/videos/m3u8/playlist.m3u8');
     }
 
     public function error404()
@@ -125,11 +126,7 @@ class IndexController extends Controller
 
     public function redis(Request $request)
     {
-            return view('redis');
+        return view('redis');
     }
 
-    public function img(Request $request)
-    {
-        dd($request);
-    }
 }
