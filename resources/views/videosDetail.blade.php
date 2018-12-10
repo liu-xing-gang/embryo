@@ -13,7 +13,7 @@
         <div class="layui-card-header">{{$video->video_title}}</div>
         <div class="layui-card-body">
             <div style="display: flex; justify-content: center; aligin-items: center;">
-                <video id="my-player" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto" width="400" height="300" poster="http://vjs.zencdn.net/v/oceans.png"></video>
+                <video id="my-player" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto" width="800" height="450" poster="http://vjs.zencdn.net/v/oceans.png"></video>
             </div>
         </div>
     </article>
